@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import authRoutes from "./routes/auth";
-import messageRoutes from "./routes/auth";
+import messageRoutes from "./routes/message";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser"
 import cors from "cors";
@@ -21,7 +21,7 @@ app.use(cors({
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
-app.use("/api/auth", messageRoutes);
+app.use("/api/messages", messageRoutes);
 
 app.listen(PORT,()=>{
     console.log("running on :"+PORT);

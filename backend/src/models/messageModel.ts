@@ -3,26 +3,26 @@ import mongoose from "mongoose";
 const messageSchema = new mongoose.Schema(
     {
         senderId:{
-            types:mongoose.Schema.Types.ObjectId,
-            ref:"User",
-            required:true
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true
         },
         userId:{
-            types:mongoose.Schema.Types.ObjectId,
-            ref:"User",
-            required:true
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true
         },
         text:{
-            type:String
+            type: String
         },
         image:{
-            type:String
+            type: String
         }
     },
     {
-        timestamps:true
+        timestamps: true
     }
 );
 
-const message = mongoose.model("Message",messageSchema);
+const message = mongoose.model("Message", messageSchema);
 export default message;
