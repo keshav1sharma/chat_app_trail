@@ -1,0 +1,29 @@
+{
+  "name": "chat_app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "cd frontend && npm install && npm run build",
+    "build:backend": "cd backend && npm install && npm run build",
+    "start": "concurrently \"npm run start:frontend\" \"cd backend && npm run start\"",
+    "start:frontend": "cd frontend && npm run dev",
+    "dev": "concurrently \"npm run start:frontend\" \"cd backend && npm run start\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sumanyu301/chat_app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Sumanyu301/chat_app/issues"
+  },
+  "homepage": "https://github.com/Sumanyu301/chat_app#readme",
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
