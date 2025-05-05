@@ -4,10 +4,10 @@ import messageRoutes from "./routes/message";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser"
 import cors from "cors";
-
+import {app,server} from "./lib/socket";
 import { connectDb } from "./lib/db";
 dotenv.config();
-const app = express();
+
 const PORT = process.env.PORT;
 
 // Increase payload size limits
@@ -23,7 +23,7 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
-app.listen(PORT,()=>{
+server.listen(PORT,()=>{
     console.log("running on :"+PORT);
     connectDb();
 });
