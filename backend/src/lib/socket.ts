@@ -10,7 +10,9 @@ const io = new Server(server, {
         origin: ["http://localhost:5173"],
     },
 });
-
+export function getReceiverSocketId(userId: string): string | null {
+    return userSocketMap[userId] || null;
+}
 
 const userSocketMap: { [key: string]: string } = {};
 

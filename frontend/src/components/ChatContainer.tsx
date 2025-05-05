@@ -6,17 +6,48 @@ import MessageSkeleton from "./skeletons/MessageSkeleton";
 import { useAuthStore } from "../store/useAuthStore";
 import { formatMessageTime } from "../lib/utils";
 
+interface Message {
+  _id: string;
+  text: string;
+  image?: string;
+  senderId: {
+    _id: string;
+    fullName: string;
+    profilePic?: string;
+  };
+  receiverId: string;
+  createdAt: string;
+}
+
 const ChatContainer = () => {
-  const { messages, getMessages, isMessageLoading, selectedUser } =
-    useChatStore() as any;
+  const {
+    messages,
+    getMessages,
+    isMessageLoading,
+    selectedUser,
+    subscribeToMessages,
+    unsubscribeFromMessages,
+  } = useChatStore() as any;
   const { authUser } = useAuthStore() as any;
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (selectedUser?._id) {
       getMessages(selectedUser._id);
+      subscribeToMessages((newMessage: Message) => {
+        // We don't need to do anything here since the store is already handling the message update
+        console.log("New message received:", newMessage);
+      });
     }
-  }, [selectedUser?._id, getMessages]);
+    return () => {
+      unsubscribeFromMessages();
+    };
+  }, [
+    selectedUser?._id,
+    getMessages,
+    subscribeToMessages,
+    unsubscribeFromMessages,
+  ]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });

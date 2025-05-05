@@ -3,6 +3,7 @@ import User from "../models/userModel";
 import Message from "../models/messageModel";
 import cloudinary from "../lib/cloudinary";
 import mongoose from "mongoose";
+import { io,getReceiverSocketId } from "../lib/socket";
 
 export const getUsersForSidebar = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -90,11 +91,16 @@ export const sendMessage = async (req: Request, res: Response): Promise<void> =>
             return;
         }
 
-        console.log("Created message:", populatedMessage); // Debug log
+        // Emit socket event to the receiver if they are online
+        const receiverSocketId = getReceiverSocketId(receiverId);
+        if (receiverSocketId) {
+            io.to(receiverSocketId).emit("newMessage", populatedMessage);
+        }
+
         res.status(201).json(populatedMessage);
     }
     catch (error) {
-        console.log("err in messages" + error);
+        console.log("Error in sendMessage controller:", error);
         res.status(500).json({
             message: "internal server error"
         });
