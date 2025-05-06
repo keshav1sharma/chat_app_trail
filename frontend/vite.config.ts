@@ -8,4 +8,12 @@ export default defineConfig({
     tailwindcss(),
     react()
   ],
+  build: {
+    // Generate sourcemaps for better debugging
+    sourcemap: true,
+    // Output directory (default is already 'dist')
+    outDir: 'dist'
+  },
+  // Base public path when served in production
+  base: '/'
 })
