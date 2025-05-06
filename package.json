@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npm run build:backend && npm run build:frontend",
+    "build": "npm run build:backend && npm run build:frontend && npm run copy-frontend",
     "build:backend": "cd backend && npm install && npm run build",
     "build:frontend": "cd frontend && npm install && npm run build",
+    "copy-frontend": "mkdir -p backend/dist/frontend && cp -r frontend/dist/* backend/dist/frontend/",
     "start": "cd backend && npm run start"
   },
   "repository": {
