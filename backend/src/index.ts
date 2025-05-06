@@ -22,7 +22,7 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 const allowedOrigins =
   process.env.NODE_ENV === "development"
     ? ["http://localhost:5173"]
-    : [process.env.PRODUCTION_URL || "https://yourdomain.com"];
+    : [process.env.PRODUCTION_URL || "*"];
 
 app.use(
   cors({
@@ -45,18 +45,29 @@ app.use("/api/messages", messageRoutes);
 
 // Serve static files and handle SPA routing in production
 if (process.env.NODE_ENV === "production") {
-  // Log the directory for debugging
-  console.log("Static files directory:", path.join(__dirname, "frontend"));
-
-  // Serve static files from frontend build directory
+  console.log("Running in production mode");
+  
+  // API routes are defined above, now handle frontend routes
+  
+  // Set the correct MIME type for JavaScript files
+  app.get("*.js", (req, res, next) => {
+    res.set("Content-Type", "application/javascript");
+    next();
+  });
+  
+  // Serve static files from frontend directory
   app.use(express.static(path.join(__dirname, "frontend")));
-
-  // Handle all other routes by serving the index.html (SPA routing)
-  app.get("*", (req: Request, res: Response) => {
-    if (req.url.startsWith("/api")) {
-      return; // Skip API routes
+  
+  // This is important - for any route not matched above, serve the index.html
+  app.get("*", (req, res) => {
+    // Don't handle API routes here (though they should be caught by the routes above)
+    if (req.path.startsWith("/api")) {
+      return res.status(404).send("API route not found");
     }
-    res.sendFile(path.join(__dirname, "frontend/index.html"));
+    
+    console.log("Serving index.html for path:", req.path);
+    // Send the index.html file for client-side routing
+    res.sendFile(path.join(__dirname, "frontend", "index.html"));
   });
 }
 
