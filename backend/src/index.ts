@@ -59,10 +59,11 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "frontend")));
   
   // This is important - for any route not matched above, serve the index.html
-  app.get("*", (req, res) => {
+  app.get("*", (req: Request, res: Response) => {
     // Don't handle API routes here (though they should be caught by the routes above)
     if (req.path.startsWith("/api")) {
-      return res.status(404).send("API route not found");
+      res.status(404).send("API route not found");
+      return;
     }
     
     console.log("Serving index.html for path:", req.path);
