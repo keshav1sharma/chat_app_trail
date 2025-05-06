@@ -46,18 +46,18 @@ app.use("/api/messages", messageRoutes);
 // Serve static files and handle SPA routing in production
 if (process.env.NODE_ENV === "production") {
   console.log("Running in production mode");
-  
+
   // API routes are defined above, now handle frontend routes
-  
+
   // Set the correct MIME type for JavaScript files
   app.get("*.js", (req, res, next) => {
     res.set("Content-Type", "application/javascript");
     next();
   });
-  
+
   // Serve static files from frontend directory
   app.use(express.static(path.join(__dirname, "frontend")));
-  
+
   // This is important - for any route not matched above, serve the index.html
   app.get("*", (req: Request, res: Response) => {
     // Don't handle API routes here (though they should be caught by the routes above)
@@ -65,7 +65,7 @@ if (process.env.NODE_ENV === "production") {
       res.status(404).send("API route not found");
       return;
     }
-    
+
     console.log("Serving index.html for path:", req.path);
     // Send the index.html file for client-side routing
     res.sendFile(path.join(__dirname, "frontend", "index.html"));
