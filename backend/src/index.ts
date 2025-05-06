@@ -45,12 +45,18 @@ app.use("/api/messages", messageRoutes);
 
 // Serve static files and handle SPA routing in production
 if (process.env.NODE_ENV === "production") {
+  // Log the directory for debugging
+  console.log("Static files directory:", path.join(__dirname, "frontend"));
+
   // Serve static files from frontend build directory
-  app.use(express.static(path.join(__dirname, "../frontend")));
+  app.use(express.static(path.join(__dirname, "frontend")));
 
   // Handle all other routes by serving the index.html (SPA routing)
   app.get("*", (req: Request, res: Response) => {
-    res.sendFile(path.join(__dirname, "../frontend/index.html"));
+    if (req.url.startsWith("/api")) {
+      return; // Skip API routes
+    }
+    res.sendFile(path.join(__dirname, "frontend/index.html"));
   });
 }
 

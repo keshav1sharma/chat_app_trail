@@ -8,5 +8,8 @@
     { "source": "/api/(.*)", "destination": "/index.js" },
     { "source": "/socket.io/(.*)", "destination": "/index.js" },
     { "source": "/(.*)", "destination": "/index.js" }
-  ]
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
 }

@@ -1,14 +1,7 @@
 import path from "path";
-import { fileURLToPath } from "url";
 
-// This helps with ES modules vs CommonJS path resolution
+// A simpler path helper that doesn't rely on import.meta
 export function getDirname() {
-  // For ESM compatibility
-  try {
-    const __filename = fileURLToPath(import.meta.url);
-    return path.dirname(__filename);
-  } catch (e) {
-    // For CommonJS fallback
-    return path.resolve();
-  }
+  // Just using path.resolve() works for both development and production on Vercel
+  return path.resolve();
 }
